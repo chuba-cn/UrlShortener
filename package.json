@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "^18.13.0"
+  },
   "name": "url-shortener",
   "version": "1.0.0",
   "description": "A URL shortening microservice",
