@@ -39,18 +39,21 @@ app.post('/api/shorturl', async (req, res) => {
     try{
         const {url} = req.body;
         if(!isValidUrl(url)){
-            return res.status(400).json({error: 'invalid url'});
+            // return res.status(400).json({error: 'invalid url'});
+            return res.json({error: 'invalid url'});
         }
 
         const existingUrl = await Url.findOne({originalUrl: url});
         
         if(existingUrl){
-            return res.status(200).json(existingUrl);
+            // return res.status(200).json(existingUrl);
+            return res.json(existingUrl);
         } else{
             const newUrl = new Url({originalUrl: url});
             newUrl.shortUrl = nanoid(5);
             await newUrl.save();
-            res.status(200).json(newUrl);
+            // res.status(200).json(newUrl);
+            res.json(newUrl);
         }
     }
     catch(error){
@@ -67,7 +70,8 @@ app.get('/api/shorturl/:short_url', async (req, res) => {
         if(foundUrl){
             res.redirect(foundUrl.originalUrl);
         }else{
-            res.status(404).json({error: 'URL not found!'});
+            // res.status(404).json({error: 'URL not found!'});
+            res.json({error: 'URL not found!'})
         }
     }
     catch(e){
