@@ -43,14 +43,14 @@ app.post('/api/shorturl', async (req, res) => {
             return res.json({error: 'invalid url'});
         }
 
-        const existingUrl = await Url.findOne({originalUrl: url});
+        const existingUrl = await Url.findOne({original_url: url});
         
         if(existingUrl){
             // return res.status(200).json(existingUrl);
-            return res.json(existingUrl);
+            return res.json({existingUrl});
         } else{
-            const newUrl = new Url({originalUrl: url});
-            newUrl.shortUrl = nanoid(5);
+            const newUrl = new Url({original_url: url});
+            newUrl.short_url = nanoid(5);
             await newUrl.save();
             // res.status(200).json(newUrl);
             res.json(newUrl);
@@ -65,10 +65,10 @@ app.post('/api/shorturl', async (req, res) => {
 app.get('/api/shorturl/:short_url', async (req, res) => {
     try{
         const {short_url} = req.params;
-        const foundUrl = await Url.findOne({shortUrl: short_url});
+        const foundUrl = await Url.findOne({short_url: short_url});
 
         if(foundUrl){
-            res.redirect(foundUrl.originalUrl);
+            res.redirect(foundUrl.original_url);
         }else{
             // res.status(404).json({error: 'URL not found!'});
             res.json({error: 'URL not found!'})
